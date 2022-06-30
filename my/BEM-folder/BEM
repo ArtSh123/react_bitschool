@@ -1,0 +1,11 @@
+
+1. hamapatasxan bloki anunov class
+2. block__item
+3. block-name__item-name_modificator-name_mod-val
+block-name__elem-name_mod-name_mod-val
+4. <div class="menu">
+	   ...
+	   <span class="menu__item menu__item_visible menu__item_type_radio">...</span>
+   </div>	
+
+   <script>document.body.contentEditable = 'true'</script>

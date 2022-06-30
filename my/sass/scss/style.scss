@@ -1,0 +1,82 @@
+
+@import "variables";
+@import "mixins";
+
+* {
+    padding: 0;
+    margin: 0;
+}
+.grid {
+    float: left;
+    width: 98%;
+    padding: 1%;
+
+    > .item {
+        @include grid(3, 2%);
+    }
+}
+
+@for $i from 24 to 29 {
+    .#{$someVar}-#{$i} {
+        width: 50px + $i;
+        width: 50px + $i;
+    }
+}
+
+a {
+    @include link(#000, #ff0000, #0000ff, #00ff00);
+}
+.header {
+    @include link(#999, #ff0000, #0000ff, #00ff00) {
+        background: #000;
+
+        &:visited {
+            color: #ff0000;
+        }
+    }
+}
+.block {
+    // width: 100px;
+    height: 100px;
+    margin: 10px;
+    border: $border4;
+}
+.block:not(.first) {
+    background: $blockBgColor;
+    @include padd(10px 30px);
+}
+.first {
+    background: $blockFirstBgColor;
+}
+.block_center {
+    @include font($mainFontSize);
+    // padding: 30px;
+
+    ul {
+        list-style: none;
+        display: inline-block;
+
+    }
+    li {
+        float: left;
+        margin-right: 10px;
+        font-weight: bold;
+
+        a {
+            font-style: normal;
+        }
+    }
+    a {
+        font-style: italic;
+
+        &:hover {
+            color: brown;
+        }
+    }
+    // a:hover {
+    //     color: yellow;
+    // }
+    span {
+        border: 1px solid #000;
+    }
+}
