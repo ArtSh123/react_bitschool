@@ -1,0 +1,102 @@
+
+-----BEM------
+
+1. hamapatasxan bloki anunov class
+2. block__item
+3. block-name__item-name_modificator-name_mod-val
+block-name__elem-name_mod-name_mod-val
+4. <div class="menu">
+	   ...
+	   <span class="menu__item menu__item_visible menu__item_type_radio">...</span>
+   </div>	
+
+
+   document.body.contentEditable = 'true'
+
+-----BEM------
+
+-----Sass------
+
+https://sass-scss.ru/install/
+npm install -g sass
+sass --version
+sass scss/style.scss css/style.css
+
+https://www.tutorialsteacher.com/sass/sass-functions
+
+@import "variables";
+   $blockBgColor: #ff0000;
+   $blockFirstBgColor: #0088ff;
+   $border4: 4px solid rgb(46, 27, 27);
+   $mainFontSize: 22px;
+   $someVar: some_class;
+@import "mixins";
+   @mixin padd($padd...) {
+      padding: $padd;
+   }
+   @mixin font($fz:18px) {
+      font-size: $fz;
+   }
+   @mixin link($link, $hover, $active, $visited) {}
+
+> .item {}
+&:hover {}
+
+@include grid(3, 2%);
+@include padd(10px 30px);
+
+@for $i from 24 to 29 {
+   .#{$someVar}-#{$i} {
+       width: 50px + $i;
+       width: 50px + $i;
+   }
+}
+
+a {
+   @include link(#000, #ff0000, #0000ff, #00ff00);
+}
+.header {
+   @include link(#999, #ff0000, #0000ff, #00ff00) {
+       background: #000;
+
+       &:visited {
+           color: #ff0000;
+       }
+   }
+}
+
+-----Sass------
+
+-----JS------
+
+js snippets>>>>>>>>>
+
+cl  - console.log
+qs  - querySelector
+qsa - querySelectorAll
+gei - getElementById
+gec - getElementsByClassName
+get - getElementsByTagName
+
+js snippets>>>>>>>>>
+
+-----JS------
+
+-----PostCss------
+
+
+
+-----PostCss------
+
+-----Commands------
+
+npx kill-port 8000
+
+-----Commands------
+
+
+-----JWT------
+
+https://www.youtube.com/watch?v=RSRsoa8WNCE&list=PLtHO7nOKfHGaWhgndBeHQFm6bYZ7ROuVe&index=6
+
+-----JWT------
