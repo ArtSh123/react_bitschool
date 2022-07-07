@@ -8,7 +8,8 @@ export class Product extends Component {
         const cardStyles = {
                         border: "1px solid red",
                         width: 400,
-                        margin: '30px auto'
+                        margin: '30px auto',
+                        textAlign: 'center'
                     };
         const {name, price, description} = this.props;
         
