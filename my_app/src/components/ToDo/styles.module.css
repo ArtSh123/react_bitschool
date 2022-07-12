@@ -1,0 +1,36 @@
+.newTaskInputContent {
+    display: flex;
+    margin-top: 30px;
+}
+.newTaskInput {
+    width: 92.8% !important;
+    margin-right: 5px;
+}
+.task {
+    position: relative;
+    background: #cce5ff;
+    color: darkblue;
+    margin: 5px;
+    padding: 5px 5px 0;
+}
+.taskTitle {
+    padding-right: 75px;
+}
+.taskRemoveIcon {
+    position: absolute;
+    cursor: pointer;
+    right: 5px;
+    top: 5px;
+}
+.taskEditIcon {
+    position: absolute;
+    cursor: pointer;
+    right: 30px;
+    top: 5px;
+}
+.taskCheckIcon {
+    position: absolute;
+    cursor: pointer;
+    right: 57px;
+    top: 5px;
+}
