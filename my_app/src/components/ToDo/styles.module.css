@@ -1,0 +1,8 @@
+.newTaskInputContent {
+    display: flex;
+    margin-top: 30px;
+}
+.newTaskInput {
+    width: 92.8% !important;
+    margin-right: 5px;
+}
