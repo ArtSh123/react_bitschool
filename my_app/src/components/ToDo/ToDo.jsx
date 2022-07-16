@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import {Card, Col, Container, Row} from 'react-bootstrap'
+import {Button, Card, Col, Container, FormCheck, Row} from 'react-bootstrap'
+import Task from '../Task/Task';
 import styles from './styles.module.css'
 
 export class ToDo extends Component {
@@ -9,6 +10,7 @@ export class ToDo extends Component {
     this.state = {
       newTaskText: '',
       tasks: [],
+      selectedTasks: new Set()
     };
   }
 
@@ -38,17 +40,53 @@ export class ToDo extends Component {
     })
   }
 
-  handleTaskRemove = (id) => {
+  handleTaskRemove = (_id) => {
     const tasksCopy = [...this.state.tasks];
-    const newTasks = tasksCopy.filter((task) => task._id !== id);
+    const newTasks = tasksCopy.filter((task) => task._id !== _id);
+
+    // const selectedTasks = [...this.state.selectedTasks];
+    // const newSelectedTasks = selectedTasks.includes(_id) ? selectedTasks.filter((id) => id !== _id) : null;
+    const selectedTasks = new Set(this.state.selectedTasks);
+    if(selectedTasks.has(_id)) {
+      selectedTasks.delete(_id)
+    }
     
     this.setState({
-      tasks: newTasks
+      tasks: newTasks,
+      selectedTasks
+    })
+  }
+
+  handleTaskCheck = (_id) => {
+    // const selectedTasks = [...this.state.selectedTasks];
+    // const newSelectedTasks = selectedTasks.includes(_id) ? selectedTasks.filter((id) => id !== _id) : [...selectedTasks, _id];
+    const selectedTasks = new Set(this.state.selectedTasks);
+    if(selectedTasks.has(_id)) {
+      selectedTasks.delete(_id)
+    } else {
+      selectedTasks.add(_id);
+    }
+
+    this.setState({
+      selectedTasks
+    })
+    
+  }
+
+  handleDeleteSelected = () => {
+    const {selectedTasks} = this.state;
+    const tasks = [...this.state.tasks];
+
+    const newTasks = tasks.filter((task) => !selectedTasks.has(task._id))
+
+    this.setState({
+      tasks: newTasks,
+      selectedTasks: new Set()
     })
   }
 
   render() {
-    const {newTaskText, tasks} = this.state;
+    const {newTaskText, tasks, selectedTasks} = this.state;
     
     return (
       <div className={`${styles.container} container`}>
@@ -64,6 +102,11 @@ export class ToDo extends Component {
             value={newTaskText} 
             onChange={this.handleChange}
             className={`form-control ${styles.newTaskInput}`} 
+            disabled={!!selectedTasks.size}
+            placeholder='Task title'
+            onKeyDown={(event) => {
+              if(event.key === "Enter") this.handleNewTaskAdd()
+            }}
           />
           <button
             onClick={this.handleNewTaskAdd}
@@ -72,6 +115,18 @@ export class ToDo extends Component {
             Add task
           </button>
         </div>
+        {
+          selectedTasks.size ? 
+          <div className='text-center mb-2'>
+            <Button
+              variant='danger'
+              onClick={this.handleDeleteSelected}
+            >
+              Delete selected
+            </Button>
+          </div>
+          : ''
+        }
 
         {
           tasks.length 
@@ -88,34 +143,11 @@ export class ToDo extends Component {
                     sm={6}
                     xs={12}
                   >
-                    <div
-                      className={`${styles.task} `}
-                    >
-                      <h4
-                        className={`${styles.taskTitle} `}
-                      >{task.title}</h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto dolorum error natus perferendis quos ad cupiditate, dignissimos quidem dolorem reiciendis, autem facilis minus voluptates est mollitia, unde odio veritatis deleniti laborum at eaque nisi iure expedita! Dignissimos perferendis aspernatur suscipit magni eius.
-                      </p>
-                      <span
-                        className={styles.taskCheckIcon}
-                        onClick={this.handleTaskCheck}
-                      >
-                        ✅
-                      </span>
-                      <span
-                        className={styles.taskEditIcon}
-                        onClick={this.handleTaskEdit}
-                      >
-                        ✏️
-                      </span>
-                      <span
-                        className={styles.taskRemoveIcon}
-                        onClick={() => this.handleTaskRemove(task._id)}
-                      >
-                        ❌
-                      </span>
-                    </div>
+                    <Task 
+                      task={task} 
+                      handleTaskCheck={this.handleTaskCheck} 
+                      handleTaskRemove={this.handleTaskRemove} 
+                    />
                   </Col>
                 );
               })
