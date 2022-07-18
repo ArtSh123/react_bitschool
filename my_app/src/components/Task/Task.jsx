@@ -1,15 +1,25 @@
 import React, { Component } from 'react'
 import { FormCheck } from 'react-bootstrap'
 import styles from './styles.module.css'
+import PropTypes from 'prop-types'
+import Confirm from '../Confirm'
 
 export class Task extends Component {
   constructor(props) {
     super(props)
   
     this.state = {
-       selected: false
+       selected: false,
+       confirmModalShow: false,
+       modalShow: false
     }
   }
+
+//   static propTypes = {
+//     task: PropTypes.object.isRequired,
+//     handleTaskCheck: PropTypes.func.isRequired,
+//     handleTaskRemove: PropTypes.func.isRequired
+//   };
 
   handleCheck = () => {
     const {task, handleTaskCheck} = this.props;
@@ -21,9 +31,37 @@ export class Task extends Component {
     })
   }
 
+  openConfirm = (taskid) => {
+    this.setState({
+        confirmModalShow: true
+    })
+  }
+
+  confirmDeleting = (taskid) => {
+    const {handleTaskRemove} = this.props;
+
+    this.setState({
+        confirmModalShow: false
+    })
+
+    handleTaskRemove(taskid);
+  }
+
+  hideConfirmModal = () => {
+    const {selectedTasksDelete, selectedTasksConfirmClose} = this.props;
+
+    if(selectedTasksDelete) {
+        selectedTasksConfirmClose();
+    } else {
+        this.setState({
+            confirmModalShow: false
+        })
+    }
+  }
+
   render() {
-    const {task, handleTaskRemove} = this.props;
-    const {selected} = this.state;
+    const {task, selectedTasksDelete, deleteselected} = this.props;
+    const {selected, confirmModalShow} = this.state;
 
     return (
         <div
@@ -55,13 +93,35 @@ export class Task extends Component {
             </span>
             <span
                 className={styles.taskRemoveIcon}
-                onClick={() => handleTaskRemove(task._id)}
+                onClick={() => this.openConfirm(task._id)}
             >
                 ❌
             </span>
+
+            <Confirm
+                show={selectedTasksDelete ? selectedTasksDelete : confirmModalShow}
+                onHide={this.hideConfirmModal}
+                confirmdeleting={selectedTasksDelete ? deleteselected : this.confirmDeleting}
+                taskid={task._id}
+                confirmtext={
+                    selectedTasksDelete ?
+                        'Are you sure to remove the selected tasks ?'
+                    :
+                        'Are you sure to remove the task ?'
+                }
+            />
         </div>
     )
   }
 }
+
+Task.propTypes = {
+    task: PropTypes.object.isRequired,
+    handleTaskCheck: PropTypes.func.isRequired,
+    handleTaskRemove: PropTypes.func.isRequired,
+    selectedTasksDelete: PropTypes.bool.isRequired,
+    selectedTasksConfirmClose: PropTypes.func.isRequired,
+    deleteselected: PropTypes.func.isRequired
+};
 
 export default Task

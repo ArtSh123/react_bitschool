@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import {Button, Card, Col, Container, FormCheck, Row} from 'react-bootstrap'
+import {Button, Col, Row} from 'react-bootstrap'
+import NewTask from '../NewTask/NewTask';
 import Task from '../Task/Task';
 import styles from './styles.module.css'
 
@@ -8,35 +9,17 @@ export class ToDo extends Component {
     super(props);
   
     this.state = {
-      newTaskText: '',
       tasks: [],
-      selectedTasks: new Set()
+      selectedTasks: new Set(),
+      isSelectedTasksDeleteClicked: false
     };
   }
-
-  handleChange = (event) => {
-    this.setState({
-      newTaskText: event.target.value
-    })
-  }
-
-  handleNewTaskAdd = () => {
+  
+  handleNewTaskAdd = (task) => {
     const {tasks} = this.state;
-    const newTaskText = this.state.newTaskText.trim();
-
-    if(!newTaskText) 
-      return;
-
-    const newTaskId = tasks.length ? tasks[tasks.length - 1]._id + 1 : 0;
-    const newTask = {
-      _id: newTaskId,
-      title: newTaskText,
-      createdDate: new Date()
-    };
 
     this.setState({
-      tasks: [...tasks, newTask],
-      newTaskText: ''
+      tasks: [...tasks, task]
     })
   }
 
@@ -73,6 +56,12 @@ export class ToDo extends Component {
     
   }
 
+  showDeleteSelectedConfirmModal = () => {
+    this.setState({
+      isSelectedTasksDeleteClicked: true
+    })
+  }
+
   handleDeleteSelected = () => {
     const {selectedTasks} = this.state;
     const tasks = [...this.state.tasks];
@@ -81,12 +70,19 @@ export class ToDo extends Component {
 
     this.setState({
       tasks: newTasks,
-      selectedTasks: new Set()
+      selectedTasks: new Set(),
+      isSelectedTasksDeleteClicked: false
+    })
+  }
+
+  handleSelectedTasksConfirmClose = () => {
+    this.setState({
+      isSelectedTasksDeleteClicked: false
     })
   }
 
   render() {
-    const {newTaskText, tasks, selectedTasks} = this.state;
+    const {tasks, selectedTasks, isSelectedTasksDeleteClicked} = this.state;
     
     return (
       <div className={`${styles.container} container`}>
@@ -96,31 +92,18 @@ export class ToDo extends Component {
           ToDo List
         </h1>
 
-        <div className={`mb-3 px-1 ${styles.newTaskInputContent}`}>
-          <input 
-            type="text" 
-            value={newTaskText} 
-            onChange={this.handleChange}
-            className={`form-control ${styles.newTaskInput}`} 
-            disabled={!!selectedTasks.size}
-            placeholder='Task title'
-            onKeyDown={(event) => {
-              if(event.key === "Enter") this.handleNewTaskAdd()
-            }}
-          />
-          <button
-            onClick={this.handleNewTaskAdd}
-            className="btn btn-primary"
-          >
-            Add task
-          </button>
-        </div>
+        <NewTask 
+          selectedTasksSize={selectedTasks.size}
+          tasks={tasks}
+          newTaskAdd={this.handleNewTaskAdd}
+        />
+
         {
           selectedTasks.size ? 
           <div className='text-center mb-2'>
             <Button
               variant='danger'
-              onClick={this.handleDeleteSelected}
+              onClick={this.showDeleteSelectedConfirmModal}
             >
               Delete selected
             </Button>
@@ -144,9 +127,12 @@ export class ToDo extends Component {
                     xs={12}
                   >
                     <Task 
-                      task={task} 
+                      task={task}
                       handleTaskCheck={this.handleTaskCheck} 
-                      handleTaskRemove={this.handleTaskRemove} 
+                      handleTaskRemove={this.handleTaskRemove}
+                      selectedTasksDelete={isSelectedTasksDeleteClicked}
+                      selectedTasksConfirmClose={this.handleSelectedTasksConfirmClose}
+                      deleteselected={this.handleDeleteSelected}
                     />
                   </Col>
                 );
