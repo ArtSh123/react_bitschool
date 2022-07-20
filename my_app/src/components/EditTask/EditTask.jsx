@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-// import styles from './styles.module.css'
 import PropTypes from 'prop-types'
 import { Button, FormControl, Modal } from 'react-bootstrap';
 
-export class NewTask extends Component {
-  handleTaskAdd = () => {
+export class EditTask extends Component {
+  handleTaskEdit = () => {
     const {add, tasks, title, description} = this.props;
 
     if(!title) 
@@ -22,7 +21,7 @@ export class NewTask extends Component {
   }
 
   render() {
-    const {title, description, change} = this.props;
+    const {title, description, change, edit} = this.props;
 
     return (
       <Modal
@@ -35,7 +34,7 @@ export class NewTask extends Component {
 
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Create new task
+            Edit task
           </Modal.Title>
         </Modal.Header>
 
@@ -61,10 +60,10 @@ export class NewTask extends Component {
 
         <Modal.Footer>
           <Button
-              onClick={this.handleTaskAdd}
-              variant="primary"
+            onClick={edit}
+            variant="primary"
           >
-              Create
+            Save
           </Button>
           <Button 
             onClick={this.props.onHide}
@@ -79,14 +78,14 @@ export class NewTask extends Component {
   }
 }
 
-NewTask.propTypes = {
-    tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-    add: PropTypes.func.isRequired,
+EditTask.propTypes = {
+    show: PropTypes.bool,
+    task: PropTypes.object,
+    edit: PropTypes.func.isRequired,
+    onHide: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    change: PropTypes.func.isRequired,
-    show: PropTypes.bool.isRequired,
-    onHide: PropTypes.func.isRequired
+    change: PropTypes.func.isRequired
 };
 
-export default NewTask
+export default EditTask

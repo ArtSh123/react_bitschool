@@ -3,13 +3,14 @@ import { FormCheck } from 'react-bootstrap'
 import styles from './styles.module.css'
 import PropTypes from 'prop-types'
 import Confirm from '../Confirm'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 export class Task extends Component {
   constructor(props) {
     super(props)
   
     this.state = {
-       selected: false,
        confirmModalShow: false,
        modalShow: false
     }
@@ -60,8 +61,8 @@ export class Task extends Component {
   }
 
   render() {
-    const {task, selectedTasksDelete, deleteselected} = this.props;
-    const {selected, confirmModalShow} = this.state;
+    const {task, selectedTasksDelete, deleteselected, selected, showTaskEditModal} = this.props;
+    const {confirmModalShow} = this.state;
 
     return (
         <div
@@ -69,6 +70,7 @@ export class Task extends Component {
         >
             <FormCheck 
                 onChange={this.handleCheck} 
+                checked={selected ? true : false}
             />
 
             <h4
@@ -77,7 +79,7 @@ export class Task extends Component {
                 {task.title}
             </h4>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto dolorum error natus perferendis quos ad cupiditate, dignissimos quidem dolorem reiciendis, autem facilis minus voluptates est mollitia, unde odio veritatis deleniti laborum at eaque nisi iure expedita! Dignissimos perferendis aspernatur suscipit magni eius.
+                {task.description}
             </p>
             <span
                 className={styles.taskCheckIcon}
@@ -87,15 +89,15 @@ export class Task extends Component {
             </span>
             <span
                 className={styles.taskEditIcon}
-                onClick={this.handleTaskEdit}
+                onClick={() => showTaskEditModal(task)}
             >
-                ✏️
+                <FontAwesomeIcon icon={faPenToSquare} color='orange' size='lg' />
             </span>
             <span
                 className={styles.taskRemoveIcon}
                 onClick={() => this.openConfirm(task._id)}
             >
-                ❌
+                <FontAwesomeIcon icon={faXmark} color='red' size='xl' />
             </span>
 
             <Confirm
@@ -121,7 +123,9 @@ Task.propTypes = {
     handleTaskRemove: PropTypes.func.isRequired,
     selectedTasksDelete: PropTypes.bool.isRequired,
     selectedTasksConfirmClose: PropTypes.func.isRequired,
-    deleteselected: PropTypes.func.isRequired
+    deleteselected: PropTypes.func.isRequired,
+    selected: PropTypes.bool.isRequired,
+    showTaskEditModal: PropTypes.func
 };
 
 export default Task

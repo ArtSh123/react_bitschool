@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Button, Col, Row} from 'react-bootstrap'
+import EditTask from '../EditTask/EditTask';
 import NewTask from '../NewTask/NewTask';
 import Task from '../Task/Task';
 import styles from './styles.module.css'
@@ -11,15 +12,31 @@ export class ToDo extends Component {
     this.state = {
       tasks: [],
       selectedTasks: new Set(),
-      isSelectedTasksDeleteClicked: false
+      isSelectedTasksDeleteClicked: false,
+      selectAll: false,
+      selectAllText: 'Select all',
+      showNewTaskModal: false,
+      title: '',
+      description: '',
+      taskForEdit: null
     };
+  }
+  
+  handleChange = (key, value) => {
+    const obj = {};
+    obj[key] = value;
+
+    this.setState(obj);
   }
   
   handleNewTaskAdd = (task) => {
     const {tasks} = this.state;
 
     this.setState({
-      tasks: [...tasks, task]
+      tasks: [...tasks, task],
+      showNewTaskModal: false,
+      title: '',
+      description: ''
     })
   }
 
@@ -81,8 +98,66 @@ export class ToDo extends Component {
     })
   }
 
+  handleSelectAll = () => {
+    const taskIds = this.state.tasks.map((task) => task._id);
+    const selectedAll = this.state.selectAll;
+
+    this.setState({
+      selectedTasks: selectedAll ? new Set() : new Set(taskIds),
+      selectAllText: selectedAll ? 'Select all' : 'Unselect all',
+      selectAll: !selectedAll,
+    })
+  }
+
+  hideNewTaskModal = () => {
+    const {showNewTaskModal} = this.state;
+
+    this.setState({
+      showNewTaskModal: !showNewTaskModal,
+      title: '',
+      description: ''
+    })
+  }
+
+  showTaskEditModal = (task) => {
+    const {title, description} = task;
+
+    this.setState({
+      taskForEdit: task,
+      title,
+      description
+    })
+  }
+
+  hideTaskEditModal = () => {
+    this.setState({
+      taskForEdit: null
+    })
+  }
+
+  handleTaskEdit = () => {
+    const tasks = [...this.state.tasks];
+    const {title, description} = this.state;
+    const taskForEdit = {...this.state.taskForEdit};
+
+    if(!title.trim())
+      return;
+
+    taskForEdit.title = title;
+    taskForEdit.description = description;
+
+    tasks[tasks.findIndex((task) => task._id === taskForEdit._id)] = taskForEdit;
+
+    this.setState({
+      tasks,
+      taskForEdit: null,
+      title: '',
+      description: ''
+    })
+  }
+
   render() {
-    const {tasks, selectedTasks, isSelectedTasksDeleteClicked} = this.state;
+    const {tasks, selectedTasks, isSelectedTasksDeleteClicked, selectAllText, showNewTaskModal, title, description, taskForEdit} = this.state;
     
     return (
       <div className={`${styles.container} container`}>
@@ -91,12 +166,28 @@ export class ToDo extends Component {
         >
           ToDo List
         </h1>
+        <hr />
 
-        <NewTask 
-          selectedTasksSize={selectedTasks.size}
-          tasks={tasks}
-          newTaskAdd={this.handleNewTaskAdd}
-        />
+        
+        <div className='mb-2 mt-3'>
+          <Button
+            variant='primary'
+            onClick={this.hideNewTaskModal}
+          >
+            + New task
+          </Button>
+          {
+            tasks.length ?
+            <Button
+              variant='warning'
+              onClick={this.handleSelectAll}
+              style={{ marginLeft: 10 }}
+            >
+              {selectAllText}
+            </Button>
+            : null
+          }
+        </div>
 
         {
           selectedTasks.size ? 
@@ -133,6 +224,8 @@ export class ToDo extends Component {
                       selectedTasksDelete={isSelectedTasksDeleteClicked}
                       selectedTasksConfirmClose={this.handleSelectedTasksConfirmClose}
                       deleteselected={this.handleDeleteSelected}
+                      selected={selectedTasks.has(task._id)}
+                      showTaskEditModal={this.showTaskEditModal}
                     />
                   </Col>
                 );
@@ -142,6 +235,27 @@ export class ToDo extends Component {
           :
           null
         }
+        
+        <NewTask 
+          tasks={tasks}
+          add={this.handleNewTaskAdd}
+          show={showNewTaskModal}
+          onHide={this.hideNewTaskModal}
+          title={title}
+          description={description}
+          change={this.handleChange}
+        />
+        
+        <EditTask 
+          show={taskForEdit}
+          task={taskForEdit}
+          edit={this.handleTaskEdit}
+          onHide={this.hideTaskEditModal}
+          title={title}
+          description={description}
+          change={this.handleChange}
+        />
+
       </div>
     )
   }
