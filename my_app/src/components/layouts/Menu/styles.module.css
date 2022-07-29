@@ -1,0 +1,9 @@
+.navLink {
+    text-decoration: none;
+    color: #ccc;
+    margin-right: 12px;
+    transition: .3s;
+}
+.navLink:hover {
+    color: #fff;
+}

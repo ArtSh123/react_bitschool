@@ -1,12 +1,16 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { FormCheck } from 'react-bootstrap'
 import styles from './styles.module.css'
 import PropTypes from 'prop-types'
 import Confirm from '../Confirm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { 
+    faPenToSquare, 
+    faXmark 
+} from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom'
 
-export class Task extends Component {
+export class Task extends PureComponent {
   constructor(props) {
     super(props)
   
@@ -71,16 +75,31 @@ export class Task extends Component {
             <FormCheck 
                 onChange={this.handleCheck} 
                 checked={selected ? true : false}
+                style={{marginBottom: 15}}
             />
 
-            <h4
-                className={`${styles.taskTitle} mt-3`}
+            <Link
+                to={'/task'}
+                style={{
+                    textDecoration: 'none',
+                    color: '#000'
+                }}
             >
-                {task.title}
-            </h4>
+                <h4>
+                    {task.title}
+                </h4>
+            </Link>
             <p>
                 {task.description}
             </p>
+            {
+                task.date ?
+                    <p>
+                        { (typeof task.date) === 'string' ? task.date.slice(0, 10) : task.date.toISOString().slice(0, 10) }
+                    </p>
+                :
+                ''
+            }
             <span
                 className={styles.taskCheckIcon}
                 onClick={this.handleTaskStatusChange}

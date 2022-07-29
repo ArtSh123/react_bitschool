@@ -1,27 +1,31 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Button, FormControl, Modal } from 'react-bootstrap';
+import { Button, 
+  FormControl, 
+  Modal 
+} from 'react-bootstrap';
+import ReactDatePicker from 'react-datepicker';
 
-export class EditTask extends Component {
+export class EditTask extends PureComponent {
   handleTaskEdit = () => {
-    const {add, tasks, title, description} = this.props;
+    const {add, tasks, title, description, date} = this.props;
 
     if(!title) 
       return;
 
-    const newTaskId = tasks.length ? tasks[tasks.length - 1]._id + 1 : 0;
+    // const newTaskId = tasks.length ? tasks[tasks.length - 1]._id + 1 : 0;
     const newTask = {
-      _id: newTaskId,
+      // _id: newTaskId,
       title,
       description,
-      createdDate: new Date()
+      date: date?.toISOString().slice(0, 10)
     };
     
     add(newTask);
   }
 
   render() {
-    const {title, description, change, edit} = this.props;
+    const {title, description, date, change, edit} = this.props;
 
     return (
       <Modal
@@ -56,6 +60,12 @@ export class EditTask extends Component {
             rows={3} 
             className='mt-3'
           />
+          <ReactDatePicker
+            selected={date}
+            minDate={new Date()}
+            onChange={(date) => change('date', date)}
+            className='mt-3'
+          />
         </Modal.Body>
 
         <Modal.Footer>
@@ -79,7 +89,7 @@ export class EditTask extends Component {
 }
 
 EditTask.propTypes = {
-    show: PropTypes.bool,
+    show: PropTypes.object,
     task: PropTypes.object,
     edit: PropTypes.func.isRequired,
     onHide: PropTypes.func.isRequired,

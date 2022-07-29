@@ -1,28 +1,33 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 // import styles from './styles.module.css'
 import PropTypes from 'prop-types'
-import { Button, FormControl, Modal } from 'react-bootstrap';
+import { Button, 
+  FormControl, 
+  Modal 
+} from 'react-bootstrap';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-export class NewTask extends Component {
+export class NewTask extends PureComponent {
   handleTaskAdd = () => {
-    const {add, tasks, title, description} = this.props;
+    const {add, title, description, date} = this.props;
 
     if(!title) 
       return;
 
-    const newTaskId = tasks.length ? tasks[tasks.length - 1]._id + 1 : 0;
+    // const newTaskId = tasks.length ? tasks[tasks.length - 1]._id + 1 : 0;
     const newTask = {
-      _id: newTaskId,
+      // _id: newTaskId,
       title,
       description,
-      createdDate: new Date()
+      date: date?.toISOString().slice(0, 10)
     };
     
     add(newTask);
   }
 
   render() {
-    const {title, description, change} = this.props;
+    const {title, description, date, change} = this.props;
 
     return (
       <Modal
@@ -55,6 +60,12 @@ export class NewTask extends Component {
             onChange={(event) => change('description', event.target.value)}
             placeholder='Description'
             rows={3} 
+            className='mt-3'
+          />
+          <DatePicker
+            selected={date}
+            minDate={new Date()}
+            onChange={(date) => change('date', date)}
             className='mt-3'
           />
         </Modal.Body>

@@ -1,5 +1,8 @@
-import React from 'react'
-import { Button, Modal } from 'react-bootstrap'
+import React, {memo} from 'react'
+import { 
+  Button, 
+  Modal 
+} from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 function Confirm(props) {
@@ -40,8 +43,8 @@ Confirm.propTypes = {
     show: PropTypes.bool.isRequired,
     onHide: PropTypes.func.isRequired,
     confirmdeleting: PropTypes.func.isRequired,
-    taskid: PropTypes.number.isRequired,
+    taskid: PropTypes.string.isRequired,
     confirmtext: PropTypes.string.isRequired
 };
 
-export default Confirm
+export default memo(Confirm)
