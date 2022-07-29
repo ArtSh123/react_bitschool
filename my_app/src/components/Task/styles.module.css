@@ -13,13 +13,13 @@
 .taskRemoveIcon {
     position: absolute;
     cursor: pointer;
-    right: 5px;
+    right: 8px;
     top: 5px;
 }
 .taskEditIcon {
     position: absolute;
     cursor: pointer;
-    right: 30px;
+    right: 31px;
     top: 5px;
 }
 .taskCheckIcon {
