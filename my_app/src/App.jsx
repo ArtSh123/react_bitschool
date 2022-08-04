@@ -39,7 +39,7 @@ function App() {
             element={<Contact />} 
           />
           <Route 
-            path='/task'
+            path='/task/:taskId'
             element={<SingleTask />} 
           />
 

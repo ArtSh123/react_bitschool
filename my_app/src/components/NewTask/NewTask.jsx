@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, createRef } from 'react'
 // import styles from './styles.module.css'
 import PropTypes from 'prop-types'
 import { Button, 
@@ -9,6 +9,22 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export class NewTask extends PureComponent {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+       
+    }
+
+    this.titleInputRef = createRef();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.show !== this.props.show) {
+      this.titleInputRef.current.focus();
+    }
+  }
+
   handleTaskAdd = () => {
     const {add, title, description, date} = this.props;
 
@@ -45,9 +61,11 @@ export class NewTask extends PureComponent {
         </Modal.Header>
 
         <Modal.Body>
-          <FormControl 
+          <input 
             type="text" 
+            className='form-control'
             value={title} 
+            ref={this.titleInputRef}
             onChange={(event) => change('title', event.target.value)}
             placeholder='Title'
             onKeyDown={(event) => {

@@ -8,7 +8,7 @@ import ReactDatePicker from 'react-datepicker';
 
 export class EditTask extends PureComponent {
   handleTaskEdit = () => {
-    const {add, tasks, title, description, date} = this.props;
+    const {add, title, description, date} = this.props;
 
     if(!title) 
       return;
@@ -61,7 +61,7 @@ export class EditTask extends PureComponent {
             className='mt-3'
           />
           <ReactDatePicker
-            selected={date}
+            selected={date ? new Date(((typeof date) === 'string') ? date.slice(0, 10) : date) : new Date()}
             minDate={new Date()}
             onChange={(date) => change('date', date)}
             className='mt-3'
@@ -89,12 +89,12 @@ export class EditTask extends PureComponent {
 }
 
 EditTask.propTypes = {
-    show: PropTypes.object,
+    show: PropTypes.any,
     task: PropTypes.object,
     edit: PropTypes.func.isRequired,
     onHide: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    description: PropTypes.string,
     change: PropTypes.func.isRequired
 };
 

@@ -3,8 +3,9 @@ import { Container, Nav, Navbar } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import styles from './styles.module.css'
 import '../../../App.css'
+import { connect } from 'react-redux'
 
-function Menu() {
+function Menu(props) {
   return (
     <Navbar bg="dark" variant="dark">
         <Container>
@@ -14,7 +15,7 @@ function Menu() {
                     className={styles.navLink}
                     style={({ isActive }) => {
                         return {
-                            color: isActive ? "#fff" : "",
+                            color: isActive ? "rgb(13 110 253)" : "",
                         };
                     }}
                 >
@@ -25,7 +26,7 @@ function Menu() {
                     className={styles.navLink}
                     style={({ isActive }) => {
                         return {
-                            color: isActive ? "#fff" : "",
+                            color: isActive ? "rgb(13 110 253)" : "",
                         };
                     }}
                 >
@@ -36,11 +37,41 @@ function Menu() {
                     className={styles.navLink}
                     style={({ isActive }) => {
                         return {
-                            color: isActive ? "#fff" : "",
+                            color: isActive ? "rgb(13 110 253)" : "",
                         };
                     }}
                 >
                     Contact
+                </NavLink>
+                <NavLink 
+                    to="/" 
+                    className={styles.navLink}
+                    style={({ isActive }) => {
+                        return {
+                            color: isActive ? "rgb(13 110 253)" : "",
+                        };
+                    }}
+                    onClick={(event) => {
+                        event.preventDefault();
+                        props.onChange()
+                    }}
+                >
+                    {props.value}
+                </NavLink>
+                <NavLink 
+                    to="/" 
+                    className={styles.navLink}
+                    style={({ isActive }) => {
+                        return {
+                            color: isActive ? "rgb(13 110 253)" : "",
+                        };
+                    }}
+                    onClick={(event) => {
+                        event.preventDefault();
+                        props.onChange2(2)
+                    }}
+                >
+                    {props.value}
                 </NavLink>
             </Nav>
         </Container>
@@ -48,4 +79,21 @@ function Menu() {
   )
 }
 
-export default Menu
+const mapStateToProps = (state) => {
+    return {
+        value: state.test
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onChange: () => {
+            dispatch({type: 'CHANGE_TEST'})
+        },
+        onChange2: (val) => {
+            dispatch({type: 'CHANGE_TEST_2', num: val})
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu)
