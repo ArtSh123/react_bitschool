@@ -1,0 +1,24 @@
+.task {
+    position: relative;
+    background: #cce5ff;
+    color: darkblue;
+    margin: 30px auto;
+    padding: 5px 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+    width: 500px;
+}
+.taskTitle {
+    padding-right: 75px;
+}
+.taskRemoveIcon, .taskEditIcon, .taskCheckIcon {
+    cursor: pointer;
+    margin-right: 10px;
+}
+.taskRemoveIcon {
+    font-size: 13px;
+}
+.selectedTask {
+    border: 1px solid red;
+}

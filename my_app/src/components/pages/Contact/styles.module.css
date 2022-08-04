@@ -1,0 +1,3 @@
+.redBorder, .redBorder:focus {
+    border: 2px solid red;
+}

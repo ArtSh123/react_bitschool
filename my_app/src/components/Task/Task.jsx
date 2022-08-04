@@ -79,18 +79,18 @@ export class Task extends PureComponent {
             />
 
             <Link
-                to={'/task'}
+                to={`/task/${task._id}`}
                 style={{
                     textDecoration: 'none',
                     color: '#000'
                 }}
             >
                 <h4>
-                    {task.title}
+                    {task.title.length < 13 ? task.title : task.title.substr(0, 13) + '...'}
                 </h4>
             </Link>
             <p>
-                {task.description}
+                {task.description.length < 20 ? task.description : task.description.substr(0, 20) + '...'}
             </p>
             {
                 task.date ?
